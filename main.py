@@ -1,4 +1,5 @@
 import os
+import math
 from PIL import Image
 from PIL import ImageFile
 import matplotlib.pyplot as plt
@@ -29,3 +30,15 @@ for i in range(h):
 for i in range(len(pixels)):
     for j in range(len(pixels[i])):
         pixels[i][j] = (pixels[i][j][0] + pixels[i][j][1] + pixels[i][j][2]) / 3
+
+# mapping brightness to characters
+characters = ["'", "^", "\\", "\"", ",", ":", ";", "I", "1", "!", "i", "~", "+", "_", "-", "?", "]", "[", "}", "{", "1", ")", "|", "/", "t", "f", "j", "r", "x", "n", "u",
+              "v", "c", "z", "X", "Y", "U", "J", "C", "L", "Q", "0", "O", "Z", "m", "w", "q", "p", "d", "b", "k", "h", "a", "o", "*", "#", "M", "W", "&", "8", "%", "B",
+              "@", "$"]
+
+for i in range(len(pixels)):
+    row = "" 
+    for j in range(len(pixels[i])):
+        index = int(pixels[i][j] / 4)
+        row = row + characters[index]
+    print(row)
