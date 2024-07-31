@@ -24,4 +24,8 @@ for i in range(h):
     for j in range(w):
         row.append(px[j, i])
     pixels.append(row)
-print(pixels)
+
+# get brightness values of each pixel, using average brightness
+for i in range(len(pixels)):
+    for j in range(len(pixels[i])):
+        pixels[i][j] = (pixels[i][j][0] + pixels[i][j][1] + pixels[i][j][2]) / 3
