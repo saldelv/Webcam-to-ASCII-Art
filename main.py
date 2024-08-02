@@ -1,11 +1,26 @@
 import os
 import math
 from PIL import Image
-from PIL import ImageFile
 import matplotlib.pyplot as plt
+import cv2 as cv
+import numpy as np
 
 # open image
-image = Image.open('test.jpg') 
+#image = Image.open('test.jpg') 
+
+# get webcam footage
+cap = cv.VideoCapture(0)
+if not cap.isOpened():
+    exit()
+
+ret, frame = cap.read()
+
+if not ret:
+    exit()
+
+frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
+image = Image.fromarray(frame)
+
 
 # show image before converting
 plt.imshow(image)
