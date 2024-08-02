@@ -1,4 +1,4 @@
 pillow
 matplotlib
 opencv-python
-numpy
+tk
