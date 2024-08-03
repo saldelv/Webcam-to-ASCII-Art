@@ -61,7 +61,8 @@ class Convert:
                 index = int(pixels[i][j] / 4)
                 row = row + characters[index]
             art = art + row + "\n"
-        print(art)
+        #print(art)
+        return art
 
     def set_size(self):
         # get and resize width and height
