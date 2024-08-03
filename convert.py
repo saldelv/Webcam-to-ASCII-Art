@@ -12,9 +12,9 @@ class Convert:
         self.brightness = 0
         self.image = None
 
-    def get_user_image(self):
+    def get_user_image(self, image):
         # open image
-        self.image = Image.open('test.jpg') 
+        self.image = image
 
         # show image before converting
         plt.imshow(self.image)

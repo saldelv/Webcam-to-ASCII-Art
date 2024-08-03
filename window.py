@@ -12,14 +12,22 @@ class Window:
 
         label = Label(root, text='Image to ASCII Art', font=(32))
         label.pack()
-        button = Button(root, text='Upload Image', command=self.upload, height=1, width=20)
-        button.pack()
+        
+        upload_button = Button(root, text='Upload Image', command=self.upload, height=1, width=20)
+        upload_button.pack()
+        webcam_button = Button(root, text='Use Webcam', command=self.webcam, height=1, width=20)
+        webcam_button.pack()
+
 
         root.mainloop()
 
     def upload(self, event=None):
         filepath = filedialog.askopenfilename()
         if filepath.endswith((".png", ".jpg")):
-            self.convertor.image = Image.open(filepath)
+            image = Image.open(filepath)
+            self.convertor.get_user_image(image)
+            self.convertor.convert_image()
 
+    def webcam(self):
+        self.convertor.get_webcam()
         self.convertor.convert_image()
