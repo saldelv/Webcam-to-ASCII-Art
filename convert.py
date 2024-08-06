@@ -3,7 +3,7 @@ from PIL import Image, ImageTk
 import matplotlib.pyplot as plt
 import cv2 as cv
 from constants import *
-
+from colorama import init
 
 class Convert:
     def __init__(self):
@@ -39,6 +39,9 @@ class Convert:
         plt.show()
 
     def convert_image(self):
+        #enable ANSI
+        init()
+
         # get pixel values
         pixels = []
         px = self.image.load()
@@ -50,18 +53,23 @@ class Convert:
             pixels.append(row)
 
         # get brightness values of each pixel, using average brightness
+        brightness = [i[:] for i in pixels]
         for i in range(len(pixels)):
             for j in range(len(pixels[i])):
-                pixels[i][j] = (pixels[i][j][0] + pixels[i][j][1] + pixels[i][j][2]) / 3
+                brightness[i][j] = (pixels[i][j][0] + pixels[i][j][1] + pixels[i][j][2]) / 3
 
         art = ""
         for i in range(len(pixels)):
             row = "" 
-            for j in range(len(pixels[i])):
-                index = int(pixels[i][j] / 4)
-                row = row + characters[index]
+            for j in range(len(brightness[i])):
+                index = int(brightness[i][j] / 4)
+                r = pixels[i][j][0]
+                g = pixels[i][j][1]
+                b = pixels[i][j][2]
+                next = f"\033[38;2;{r};{g};{b}m{characters[index]}\033[0m"
+                row = row + next
             art = art + row + "\n"
-        #print(art)
+        print(art)
         return art
 
     def set_size(self):
