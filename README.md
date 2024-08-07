@@ -1,1 +1,1 @@
-# Image-to-ASCII-Art
+# Webcam-to-ASCII-Art

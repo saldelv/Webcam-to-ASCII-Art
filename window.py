@@ -1,3 +1,4 @@
+import os
 import tkinter as tk
 from tkinter import *
 from tkinter import filedialog
@@ -18,17 +19,21 @@ class Window:
         webcam_button = Button(root, text='Use Webcam', command=self.webcam, height=1, width=20)
         webcam_button.pack()
 
-
         root.mainloop()
 
     def upload(self, event=None):
         filepath = filedialog.askopenfilename()
         if filepath.endswith((".png", ".jpg")):
-            image = Image.open(filepath)
-            self.convertor.get_user_image(image)
+            self.convertor.get_user_image(filepath)
             self.convertor.set_size()
             self.convertor.convert_image()
 
     def webcam(self):
-        self.convertor.get_webcam()
-        self.convertor.convert_image()
+        self.convertor.start_webcam()
+        while True:
+            if self.convertor.get_webcam() == 0:
+                break
+            self.convertor.set_size()
+            self.convertor.convert_image()
+        self.convertor.cap.release()
+        cv.destroyAllWindows()
