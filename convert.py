@@ -14,8 +14,7 @@ class Convert:
     def get_user_image(self, filepath):
         # open image
         image = cv.imread(filepath)
-        image_rgb = cv.cvtColor(image, cv.COLOR_BGR2RGB)
-        self.image = image_rgb
+        self.image = image
 
         # show image before converting
         cv.imshow('image', self.image)
@@ -34,8 +33,11 @@ class Convert:
         if not ret:
             exit()
 
-        frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
-        self.image = frame
+        if self.color:
+            frame_color = frame
+        else:
+            frame_color = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+        self.image = frame_color
 
         # show image before converting
         cv.imshow('webcam', self.image)
@@ -52,11 +54,12 @@ class Convert:
         for i in range(self.image.shape[0]):
             row = ""
             for j in range(self.image.shape[1]):
-                brightness = (self.image[i][j][0] + self.image[i][j][1] + self.image[i][j][2]) / 3
-                if (self.color):
+                if self.color:
+                    brightness = (self.image[i][j][0] + self.image[i][j][1] + self.image[i][j][2]) / 3
                     next = f"\033[38;2;{self.image[i, j][0]};{self.image[i, j][1]};{self.image[i, j][2]}m{characters[int(brightness / 4)] * 2}\033[0m"
                 else:
-                    next = characters[int(brightness / 4)] * 2
+                    brightness = self.image[i][j]
+                    next = characters[int(brightness / 4) - 1] * 2
                 row = row + next
             art = art + row + "\n"
         #print(chr(27) + "[2J")
