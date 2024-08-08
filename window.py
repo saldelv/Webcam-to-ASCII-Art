@@ -8,6 +8,7 @@ class Window:
     def __init__(self):
         self.convertor = Convert()
         self.color_var = None
+        self.size_var = None
         self.brightness_var = None
 
     def create_winodw(self):
@@ -23,6 +24,14 @@ class Window:
                                    onvalue=True, 
                                    height=2)
         color_button.pack()
+
+        self.size_var = tk.BooleanVar()
+        size_button = Checkbutton(root, text="Double size (slower)", 
+                                   variable=self.size_var, 
+                                   offvalue=False, 
+                                   onvalue=True, 
+                                   height=2)
+        size_button.pack()
 
         self.brightness_var = tk.IntVar()
         brightness_button = Checkbutton(root, text="Invert brightness", 
@@ -45,7 +54,7 @@ class Window:
         filepath = filedialog.askopenfilename()
         if filepath.endswith((".png", ".jpg")):
             self.convertor.get_user_image(filepath)
-            self.convertor.set_size()
+            self.convertor.set_size(self.size_var.get())
             self.convertor.convert_image()
 
     def webcam(self):
@@ -55,7 +64,7 @@ class Window:
         while True:
             if self.convertor.get_webcam() == 0:
                 break
-            self.convertor.set_size()
+            self.convertor.set_size(self.size_var.get())
             self.convertor.convert_image()
         self.convertor.cap.release()
         cv.destroyAllWindows()

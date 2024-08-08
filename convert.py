@@ -77,8 +77,11 @@ class Convert:
             art = art + row + "\n"
         print(art)
 
-    def set_size(self):
+    def set_size(self, doubled):
         # get and resize width and height
         w = 80
         h = 60
+        if doubled:
+            w *= 2
+            h *= 2
         self.image = cv.resize(self.image, (w, h))
