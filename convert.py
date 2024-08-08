@@ -15,12 +15,16 @@ class Convert:
         # open image
         image = cv.imread(filepath)
 
-        if not self.color:
-            image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-
-        self.image = image
         # show image before converting
-        cv.imshow('image', self.image)
+        cv.imshow('image', image)
+
+        if self.color:
+            image_color = cv.cvtColor(image, cv.COLOR_BGR2RGB)
+        else:
+            image_color = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+        
+
+        self.image = image_color
 
     def start_webcam(self):
         self.cap = cv.VideoCapture(0, cv.CAP_DSHOW)
@@ -36,14 +40,14 @@ class Convert:
         if not ret:
             exit()
 
+        # show image before converting
+        cv.imshow('webcam', frame)
+
         if self.color:
-            frame_color = frame
+            frame_color = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
         else:
             frame_color = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
         self.image = frame_color
-
-        # show image before converting
-        cv.imshow('webcam', self.image)
 
         if cv.waitKey(1) & 0xFF == ord('q'):
             return 0
@@ -59,19 +63,18 @@ class Convert:
             for j in range(self.image.shape[1]):
                 if self.color:
                     brightness = (self.image[i][j][0] + self.image[i][j][1] + self.image[i][j][2]) / 3
-                    index = int(brightness / 4)
+                    index = int(brightness / 10)
                     if self.brightness_type == 1:
                         index = len(characters) - index
                     next = f"\033[38;2;{self.image[i, j][0]};{self.image[i, j][1]};{self.image[i, j][2]}m{characters[index] * 2}\033[0m"
                 else:
                     brightness = self.image[i][j]
-                    index = int(brightness / 4)
+                    index = int(brightness / 10)
                     if self.brightness_type == 1:
                         index = len(characters) - index
                     next = characters[index] * 2
                 row = row + next
             art = art + row + "\n"
-        #print(chr(27) + "[2J")
         print(art)
 
     def set_size(self):
