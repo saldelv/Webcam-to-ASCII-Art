@@ -63,13 +63,13 @@ class Convert:
             for j in range(self.image.shape[1]):
                 if self.color:
                     brightness = (self.image[i][j][0] + self.image[i][j][1] + self.image[i][j][2]) / 3
-                    index = int(brightness / 10)
+                    index = int(brightness / 3.93)
                     if self.brightness_type == 1:
                         index = len(characters) - index
                     next = f"\033[38;2;{self.image[i, j][0]};{self.image[i, j][1]};{self.image[i, j][2]}m{characters[index] * 2}\033[0m"
                 else:
                     brightness = self.image[i][j]
-                    index = int(brightness / 10)
+                    index = int(brightness / 3.93)
                     if self.brightness_type == 1:
                         index = len(characters) - index
                     next = characters[index] * 2
