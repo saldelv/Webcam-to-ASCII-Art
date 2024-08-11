@@ -62,30 +62,24 @@ class Convert:
         # enable ANSI
         init()
 
-        # convert image to ascii
+        # convert image to ascii by checking if it needs color or inverted brightness, getting pixel brightness and asigning a character to it, and adding the character
         art = ""
         for i in range(self.image.shape[0]):
             row = ""
             for j in range(self.image.shape[1]):
-                # check if image is in color or not
                 if self.color:
-                    # get pixel brightness and asign a character to it
                     brightness = (self.image[i][j][0] + self.image[i][j][1] + self.image[i][j][2]) / 3
                     index = int(brightness / 3.93)
-                    # check if brightness is inverted
                     if self.brightness_type == 1:
                         index = len(characters) - index
-                    # add character to current row in color with ANSI
                     next = f"\033[38;2;{self.image[i, j][0]};{self.image[i, j][1]};{self.image[i, j][2]}m{characters[index] * 2}\033[0m"
                 else:
-                    # get pixel brightness and asign a character to it
                     brightness = self.image[i][j]
                     index = int(brightness / 3.93)
-                    # check if brightness is inverted
                     if self.brightness_type == 1:
                         index = len(characters) - index
-                    # add character to current row
                     next = characters[index] * 2
+                # add character to current row
                 row = row + next
             # add row to next line of the ascii art
             art = art + row + "\n"
