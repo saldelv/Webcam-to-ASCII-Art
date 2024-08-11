@@ -18,15 +18,17 @@ class Convert:
         # show image before converting
         cv.imshow('image', image)
 
+        # convert to correct color setting
         if self.color:
             image_color = cv.cvtColor(image, cv.COLOR_BGR2RGB)
         else:
             image_color = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
         
-
+        # save opened image as class variable
         self.image = image_color
 
     def start_webcam(self):
+        # start webcam capture
         self.cap = cv.VideoCapture(0, cv.CAP_DSHOW)
         if not self.cap.isOpened():
             exit()
@@ -34,7 +36,7 @@ class Convert:
         cv.namedWindow("webcam")
 
     def get_webcam(self):
-        # get webcam footage
+        # get current webcam video frame
         ret, frame = self.cap.read()
 
         if not ret:
@@ -43,12 +45,16 @@ class Convert:
         # show image before converting
         cv.imshow('webcam', frame)
 
+        # convert to correct color setting
         if self.color:
             frame_color = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
         else:
             frame_color = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+
+        # save opened image as class variable
         self.image = frame_color
 
+        # end webcam video if q is pressed
         if cv.waitKey(1) & 0xFF == ord('q'):
             return 0
 
@@ -61,24 +67,33 @@ class Convert:
         for i in range(self.image.shape[0]):
             row = ""
             for j in range(self.image.shape[1]):
+                # check if image is in color or not
                 if self.color:
+                    # get pixel brightness and asign a character to it
                     brightness = (self.image[i][j][0] + self.image[i][j][1] + self.image[i][j][2]) / 3
                     index = int(brightness / 3.93)
+                    # check if brightness is inverted
                     if self.brightness_type == 1:
                         index = len(characters) - index
+                    # add character to current row in color with ANSI
                     next = f"\033[38;2;{self.image[i, j][0]};{self.image[i, j][1]};{self.image[i, j][2]}m{characters[index] * 2}\033[0m"
                 else:
+                    # get pixel brightness and asign a character to it
                     brightness = self.image[i][j]
                     index = int(brightness / 3.93)
+                    # check if brightness is inverted
                     if self.brightness_type == 1:
                         index = len(characters) - index
+                    # add character to current row
                     next = characters[index] * 2
                 row = row + next
+            # add row to next line of the ascii art
             art = art + row + "\n"
+        # print finished ascii art
         print(art)
 
     def set_size(self, doubled):
-        # get and resize width and height
+        # get and resize width and height to work best in terminal
         w = 80
         h = 60
         if doubled:
