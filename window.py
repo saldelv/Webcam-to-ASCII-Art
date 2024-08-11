@@ -10,6 +10,7 @@ class Window:
         self.color_var = None
         self.size_var = None
         self.brightness_var = None
+        self.image_label = None
 
     def create_winodw(self):
         root = tk.Tk()
@@ -43,6 +44,9 @@ class Window:
 
         upload_button = Button(root, text='Upload Image', command=self.upload, height=1, width=20)
         upload_button.pack()
+        self.image_label = Label(text="")
+        self.image_label.pack()
+
         webcam_button = Button(root, text='Use Webcam', command=self.webcam, height=1, width=20)
         webcam_button.pack()
 
@@ -53,9 +57,12 @@ class Window:
         self.convertor.brightness_type = self.brightness_var.get()
         filepath = filedialog.askopenfilename()
         if filepath.endswith((".png", ".jpg")):
+            self.image_label.configure(text="")
             self.convertor.get_user_image(filepath)
             self.convertor.set_size(self.size_var.get())
             self.convertor.convert_image()
+        else:
+            self.image_label.configure(text="Invalid file type, please use .png or .jpg", fg="red")
 
     def webcam(self):
         self.convertor.color = self.color_var.get()
