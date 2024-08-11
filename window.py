@@ -16,7 +16,7 @@ class Window:
         root = tk.Tk()
 
         # title text
-        label = Label(root, text='Image to ASCII Art', font=(32))
+        label = Label(root, text='Webcam to ASCII Art', font=(32))
         label.pack()
 
         # check boxes for color, brightness, and size values
